@@ -39,12 +39,53 @@ export default function SolicitudSuministrosScreen() {
 
 //Zona3: estilos
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#F9F3EA' },
-  form: { paddingHorizontal: 20, paddingBottom: 120 },
-  card: { backgroundColor: '#FFF', borderRadius: 15, padding: 20, marginBottom: 25, elevation: 2, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.05, shadowRadius: 5 },
-  cardTitle: { fontSize: 18, fontWeight: 'bold', color: '#5B3E31' },
-  cardSub: { fontSize: 14, color: '#9E8A7D', marginTop: 4 },
-  inputGroup: { marginBottom: 30 },
-  label: { fontSize: 16, fontWeight: 'bold', color: '#5B3E31', marginBottom: 10 },
-  input: { backgroundColor: '#FFF', height: 50, borderRadius: 15, paddingHorizontal: 15, elevation: 2, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.05, shadowRadius: 5 },
+  container: {
+    flex: 1,
+    backgroundColor: '#F9F3EA',
+  },
+  form: {
+    paddingHorizontal: 20,
+    paddingBottom: 120,
+  },
+  card: {
+    backgroundColor: '#FFF',
+    borderRadius: 15,
+    padding: 20,
+    marginBottom: 25,
+    elevation: 2,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 5,
+  },
+  cardTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#5B3E31',
+  },
+  cardSub: {
+    fontSize: 14,
+    color: '#9E8A7D',
+    marginTop: 4,
+  },
+  inputGroup: {
+    marginBottom: 30,
+  },
+  label: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#5B3E31',
+    marginBottom: 10,
+  },
+  input: {
+    backgroundColor: '#FFF',
+    height: 50,
+    borderRadius: 15,
+    paddingHorizontal: 15,
+    elevation: 2,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 5,
+  },
 });
