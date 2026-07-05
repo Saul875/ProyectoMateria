@@ -3,11 +3,11 @@ import { View, StyleSheet, Platform } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
-// Import Screens
+// Screens actuales
 import CajaInicioScreen from './screens/CajaInicioScreen';
 import CocinaPedidosScreen from './screens/CocinaPedidosScreen';
 import CajaCuentaScreen from './screens/CajaCuentaScreen';
@@ -16,11 +16,19 @@ import CocinaInventarioScreen from './screens/CocinaInventarioScreen';
 import SolicitudSuministrosScreen from './screens/SolicitudSuministrosScreen';
 import MesasScreen from './screens/MesasScreen';
 
-const Tab = createBottomTabNavigator();
+// Nuevos screens cliente
+import WelcomeScreen from './screens/WelcomeScreen';
+import LoginScreen from './screens/LoginScreen';
+import MenuClienteScreen from './screens/MenuClienteScreen';
+import ProductDetailsScreen from './screens/ProductDetailsScreen';
+import OrdersClienteScreen from './screens/OrdersClienteScreen';
+import OrderDetailsClienteScreen from './screens/OrderDetailsClienteScreen';
 
-// --- STACKS PARA LAS PESTAÑAS ---
-// Stack de Cocina
+const Tab = createBottomTabNavigator();
 const CocinaStack = createNativeStackNavigator();
+const CajaStack = createNativeStackNavigator();
+const ClienteStack = createNativeStackNavigator();
+
 function CocinaNavigator() {
   return (
     <CocinaStack.Navigator screenOptions={{ headerShown: false }}>
@@ -30,8 +38,6 @@ function CocinaNavigator() {
   );
 }
 
-// Stack de Caja
-const CajaStack = createNativeStackNavigator();
 function CajaNavigator() {
   return (
     <CajaStack.Navigator screenOptions={{ headerShown: false }}>
@@ -43,12 +49,26 @@ function CajaNavigator() {
   );
 }
 
+function ClienteNavigator() {
+  return (
+    <ClienteStack.Navigator screenOptions={{ headerShown: false }}>
+      <ClienteStack.Screen name="Welcome" component={WelcomeScreen} />
+      <ClienteStack.Screen name="Login" component={LoginScreen} />
+      <ClienteStack.Screen name="MenuClienteScreen" component={MenuClienteScreen} />
+      <ClienteStack.Screen name="ProductDetails" component={ProductDetailsScreen} />
+      <ClienteStack.Screen name="OrdersCliente" component={OrdersClienteScreen} />
+      <ClienteStack.Screen name="OrderDetailsCliente" component={OrderDetailsClienteScreen} />
+    </ClienteStack.Navigator>
+  );
+}
+
 export default function App() {
   return (
     <SafeAreaProvider>
       <View style={styles.webContainer}>
         <View style={styles.appWrapper}>
           <StatusBar style="auto" />
+
           <NavigationContainer>
             <Tab.Navigator
               screenOptions={({ route }) => ({
@@ -56,37 +76,23 @@ export default function App() {
                 tabBarShowLabel: true,
                 tabBarActiveTintColor: '#5B3E31',
                 tabBarInactiveTintColor: '#9E8A7D',
-                tabBarStyle: {
-                  height: 70,
-                  paddingBottom: 10,
-                  paddingTop: 10,
-                  backgroundColor: '#FFF',
-                  borderTopLeftRadius: 30,
-                  borderTopRightRadius: 30,
-                  position: 'absolute',
-                  borderTopWidth: 0,
-                  shadowColor: '#000',
-                  shadowOffset: { width: 0, height: -2 },
-                  shadowOpacity: 0.1,
-                  shadowRadius: 10,
-                  elevation: 5,
-                },
-                tabBarIcon: ({ focused, color, size }) => {
-                  let iconName;
+                tabBarStyle: styles.tabBar,
+                tabBarIcon: ({ color, size, focused }) => {
+                  let iconName = 'home-outline';
 
                   if (route.name === 'Inicio') {
                     iconName = focused ? 'home' : 'home-outline';
-                    return <Ionicons name={iconName} size={size} color={color} />;
                   } else if (route.name === 'Cocina') {
                     iconName = focused ? 'cafe' : 'cafe-outline';
-                    return <Ionicons name={iconName} size={size} color={color} />;
                   } else if (route.name === 'Caja') {
                     iconName = focused ? 'cash' : 'cash-outline';
-                    return <Ionicons name={iconName} size={size} color={color} />;
                   } else if (route.name === 'Stock') {
                     iconName = focused ? 'cube' : 'cube-outline';
-                    return <Ionicons name={iconName} size={size} color={color} />;
+                  } else if (route.name === 'Cliente') {
+                    iconName = focused ? 'person' : 'person-outline';
                   }
+
+                  return <Ionicons name={iconName} size={size} color={color} />;
                 },
               })}
             >
@@ -94,6 +100,7 @@ export default function App() {
               <Tab.Screen name="Cocina" component={CocinaNavigator} />
               <Tab.Screen name="Caja" component={CajaCuentaScreen} />
               <Tab.Screen name="Stock" component={StockProductosScreen} />
+              <Tab.Screen name="Cliente" component={ClienteNavigator} />
             </Tab.Navigator>
           </NavigationContainer>
         </View>
@@ -125,5 +132,20 @@ const styles = StyleSheet.create({
       borderRadius: 40,
       marginVertical: 20,
     }),
+  },
+  tabBar: {
+    height: 70,
+    paddingBottom: 10,
+    paddingTop: 10,
+    backgroundColor: '#FFF',
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    position: 'absolute',
+    borderTopWidth: 0,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: -2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 10,
+    elevation: 5,
   },
 });
