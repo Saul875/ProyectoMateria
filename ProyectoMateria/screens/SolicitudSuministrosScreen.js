@@ -1,12 +1,15 @@
 //zona1: importaciones
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, SafeAreaView, TextInput } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 import Header from '../components/Header';
 import SubHeader from '../components/SubHeader';
 import ActionButton from '../components/ActionButton';
 
 //Zona2: componente
 export default function SolicitudSuministrosScreen() {
+  const navigation = useNavigation();
+
   return (
     <SafeAreaView style={styles.container}>
       <Header title="Caja - Suministros" />
@@ -31,7 +34,7 @@ export default function SolicitudSuministrosScreen() {
         </View>
 
         <ActionButton label="Confirmar Solicitud" color="#6B7280" iconName="checkmark" />
-        <ActionButton label="Cancelar Solicitud"  color="#EF4444" iconName="close" />
+        <ActionButton label="Volver"  color="#EF4444" iconName="close" onPress={() => navigation.goBack()} />
       </ScrollView>
     </SafeAreaView>
   );

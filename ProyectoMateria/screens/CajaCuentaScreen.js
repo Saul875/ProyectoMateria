@@ -1,7 +1,8 @@
 //zona1: importaciones
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, SafeAreaView } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, SafeAreaView, Modal } from 'react-native';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 import Header from '../components/Header';
 import SubHeader from '../components/SubHeader';
 import ActionButton from '../components/ActionButton';
@@ -24,15 +25,23 @@ const actions = [
   { label: 'Realizar Cobro',    color: '#28A745', iconName: 'cash-outline' },
   { label: 'Generar Ticket',   color: '#3B82F6', iconName: 'receipt-outline' },
   { label: 'Cancelar Cuenta',  color: '#EF4444', iconName: 'close' },
+  { label: 'Volver',           color: '#6B7280', iconName: 'arrow-back-outline' },
 ];
 
 //Zona2: componente
 export default function CajaCuentaScreen() {
+  const navigation = useNavigation();
   const [modalVisible, setModalVisible] = React.useState(false);
+  const [pagoModalVisible, setPagoModalVisible] = React.useState(false);
+  const [selectedMethod, setSelectedMethod] = React.useState(0);
 
   const handleAction = (label) => {
     if (label === 'Cancelar Cuenta') {
       setModalVisible(true);
+    } else if (label === 'Volver') {
+      navigation.goBack();
+    } else if (label === 'Realizar Cobro') {
+      setPagoModalVisible(true);
     }
   };
 
@@ -85,9 +94,13 @@ export default function CajaCuentaScreen() {
           <Text style={styles.cardSub}>Selecciona el método:</Text>
           <View style={styles.methodsRow}>
             {paymentMethods.map((m, i) => (
-              <TouchableOpacity key={i} style={[styles.methodBtn, i === 0 && styles.methodBtnActive]}>
-                <Ionicons name={m.icon} size={24} color={i === 0 ? '#FFF' : '#5B3E31'} />
-                <Text style={i === 0 ? styles.methodTextActive : styles.methodText}>{m.label}</Text>
+              <TouchableOpacity
+                key={i}
+                style={[styles.methodBtn, selectedMethod === i && styles.methodBtnActive]}
+                onPress={() => setSelectedMethod(i)}
+              >
+                <Ionicons name={m.icon} size={24} color={selectedMethod === i ? '#FFF' : '#5B3E31'} />
+                <Text style={selectedMethod === i ? styles.methodTextActive : styles.methodText}>{m.label}</Text>
               </TouchableOpacity>
             ))}
           </View>
@@ -109,6 +122,39 @@ export default function CajaCuentaScreen() {
         onCancel={() => setModalVisible(false)}
         confirmText="Cancelar Cuenta"
       />
+
+      {/* Modal de pago exitoso */}
+      <Modal visible={pagoModalVisible} transparent animationType="fade">
+        <View style={styles.pagoOverlay}>
+          <View style={styles.pagoCard}>
+            <View style={styles.pagoIconCircle}>
+              <Ionicons name="checkmark" size={48} color="#FFF" />
+            </View>
+            <Text style={styles.pagoTitle}>¡Pago Exitoso!</Text>
+            <Text style={styles.pagoSub}>El cobro ha sido registrado correctamente.</Text>
+
+            <View style={styles.pagoTotalBox}>
+              <Text style={styles.pagoTotalLabel}>Total cobrado</Text>
+              <Text style={styles.pagoTotalValue}>$26.10</Text>
+            </View>
+
+            <View style={styles.pagoMeta}>
+              <Ionicons name="cash-outline" size={16} color="#9E8A7D" />
+              <Text style={styles.pagoMetaText}>Mesa 5 · Juan Pérez · Efectivo</Text>
+            </View>
+
+            <TouchableOpacity
+              style={styles.pagoBtn}
+              onPress={() => {
+                setPagoModalVisible(false);
+                navigation.goBack();
+              }}
+            >
+              <Text style={styles.pagoBtnText}>Aceptar</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 }
@@ -256,6 +302,91 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#FFF',
     fontWeight: '500',
+  },
+  pagoOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 30,
+  },
+  pagoCard: {
+    backgroundColor: '#FFF',
+    borderRadius: 28,
+    padding: 32,
+    width: '100%',
+    alignItems: 'center',
+    elevation: 10,
+  },
+  pagoIconCircle: {
+    width: 90,
+    height: 90,
+    borderRadius: 45,
+    backgroundColor: '#28A745',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 20,
+    elevation: 4,
+    shadowColor: '#28A745',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.3,
+    shadowRadius: 10,
+  },
+  pagoTitle: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#5B3E31',
+    marginBottom: 8,
+  },
+  pagoSub: {
+    fontSize: 14,
+    color: '#9E8A7D',
+    textAlign: 'center',
+    marginBottom: 24,
+    lineHeight: 20,
+  },
+  pagoTotalBox: {
+    backgroundColor: '#F9F3EA',
+    borderRadius: 18,
+    paddingVertical: 16,
+    paddingHorizontal: 30,
+    alignItems: 'center',
+    marginBottom: 16,
+    width: '100%',
+  },
+  pagoTotalLabel: {
+    fontSize: 13,
+    color: '#9E8A7D',
+    fontWeight: '500',
+    marginBottom: 4,
+  },
+  pagoTotalValue: {
+    fontSize: 32,
+    fontWeight: 'bold',
+    color: '#28A745',
+  },
+  pagoMeta: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 28,
+    gap: 6,
+  },
+  pagoMetaText: {
+    fontSize: 13,
+    color: '#9E8A7D',
+  },
+  pagoBtn: {
+    backgroundColor: '#28A745',
+    borderRadius: 18,
+    paddingVertical: 16,
+    paddingHorizontal: 50,
+    width: '100%',
+    alignItems: 'center',
+  },
+  pagoBtnText: {
+    color: '#FFF',
+    fontWeight: 'bold',
+    fontSize: 17,
   },
 });
 

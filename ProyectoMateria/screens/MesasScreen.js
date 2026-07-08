@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, SafeAreaView, Modal } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 import Header from '../components/Header';
 import SubHeader from '../components/SubHeader';
 import ConfirmModal from '../components/ConfirmModal';
@@ -17,8 +18,14 @@ const mesasIniciales = [
   { id: 8, capacidad: 6 },
 ];
 
+const tabs = [
+    { label: 'Menú', active: false, onPress: 'MenuClienteScreen' },
+    { label: 'Mesas', active: true, onPress: null },
+];
+
 //Zona2: componente
 export default function MesasScreen() {
+  const navigation = useNavigation();
   const [mesas, setMesas] = useState(
     mesasIniciales.map(m => ({ ...m, ocupada: false, personas: 0 }))
   );
@@ -78,6 +85,19 @@ export default function MesasScreen() {
           <View style={[styles.dot, { backgroundColor: '#EF4444' }]} />
           <Text style={styles.resumenText}>{ocupadas} Ocupadas</Text>
         </View>
+      </View>
+
+      <View style={styles.tabsMenu}>
+        {tabs.map((tab, i) => (
+          <TouchableOpacity 
+            key={i} 
+            style={tab.active ? styles.tabItemActive : styles.tabItem} 
+            onPress={() => tab.onPress && navigation.navigate(tab.onPress)}
+          >
+            <Text style={tab.active ? styles.tabTextActive : styles.tabText}>{tab.label}</Text>
+            {tab.active && <View style={styles.tabIndicator} />}
+          </TouchableOpacity>
+        ))}
       </View>
 
       {/* Grid de mesas */}
@@ -164,6 +184,39 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#F9F3EA',
+  },
+  tabsMenu: {
+    flexDirection: 'row',
+    paddingHorizontal: 20,
+    marginBottom: 20,
+    justifyContent: 'space-between',
+  },
+  tabItemActive: {
+    flex: 1,
+    alignItems: 'center',
+    paddingBottom: 8,
+  },
+  tabItem: {
+    flex: 1,
+    alignItems: 'center',
+    paddingBottom: 8,
+  },
+  tabTextActive: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#5B3E31',
+  },
+  tabText: {
+    fontSize: 16,
+    fontWeight: '500',
+    color: '#9E8A7D',
+  },
+  tabIndicator: {
+    height: 3,
+    backgroundColor: '#5B3E31',
+    width: 20,
+    marginTop: 4,
+    borderRadius: 2,
   },
   resumen: {
     flexDirection: 'row',

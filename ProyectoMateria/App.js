@@ -17,17 +17,19 @@ import SolicitudSuministrosScreen from './screens/SolicitudSuministrosScreen';
 import MesasScreen from './screens/MesasScreen';
 
 // Nuevos screens cliente
-import WelcomeScreen from './screens/WelcomeScreen';
-import LoginScreen from './screens/LoginScreen';
 import MenuClienteScreen from './screens/MenuClienteScreen';
 import ProductDetailsScreen from './screens/ProductDetailsScreen';
 import OrdersClienteScreen from './screens/OrdersClienteScreen';
 import OrderDetailsClienteScreen from './screens/OrderDetailsClienteScreen';
 
+// Fake Login
+import RoleLoginScreen from './screens/RoleLoginScreen';
+
 const Tab = createBottomTabNavigator();
 const CocinaStack = createNativeStackNavigator();
 const CajaStack = createNativeStackNavigator();
 const ClienteStack = createNativeStackNavigator();
+const RootStack = createNativeStackNavigator();
 
 function CocinaNavigator() {
   return (
@@ -44,17 +46,15 @@ function CajaNavigator() {
       <CajaStack.Screen name="InicioCaja" component={CajaInicioScreen} />
       <CajaStack.Screen name="Cuenta" component={CajaCuentaScreen} />
       <CajaStack.Screen name="Suministros" component={SolicitudSuministrosScreen} />
-      <CajaStack.Screen name="Mesas" component={MesasScreen} />
     </CajaStack.Navigator>
   );
 }
 
 function ClienteNavigator() {
   return (
-    <ClienteStack.Navigator screenOptions={{ headerShown: false }}>
-      <ClienteStack.Screen name="Welcome" component={WelcomeScreen} />
-      <ClienteStack.Screen name="Login" component={LoginScreen} />
+    <ClienteStack.Navigator screenOptions={{ headerShown: false }} initialRouteName="MenuClienteScreen">
       <ClienteStack.Screen name="MenuClienteScreen" component={MenuClienteScreen} />
+      <ClienteStack.Screen name="Mesas" component={MesasScreen} />
       <ClienteStack.Screen name="ProductDetails" component={ProductDetailsScreen} />
       <ClienteStack.Screen name="OrdersCliente" component={OrdersClienteScreen} />
       <ClienteStack.Screen name="OrderDetailsCliente" component={OrderDetailsClienteScreen} />
@@ -70,38 +70,12 @@ export default function App() {
           <StatusBar style="auto" />
 
           <NavigationContainer>
-            <Tab.Navigator
-              screenOptions={({ route }) => ({
-                headerShown: false,
-                tabBarShowLabel: true,
-                tabBarActiveTintColor: '#5B3E31',
-                tabBarInactiveTintColor: '#9E8A7D',
-                tabBarStyle: styles.tabBar,
-                tabBarIcon: ({ color, size, focused }) => {
-                  let iconName = 'home-outline';
-
-                  if (route.name === 'Inicio') {
-                    iconName = focused ? 'home' : 'home-outline';
-                  } else if (route.name === 'Cocina') {
-                    iconName = focused ? 'cafe' : 'cafe-outline';
-                  } else if (route.name === 'Caja') {
-                    iconName = focused ? 'cash' : 'cash-outline';
-                  } else if (route.name === 'Stock') {
-                    iconName = focused ? 'cube' : 'cube-outline';
-                  } else if (route.name === 'Cliente') {
-                    iconName = focused ? 'person' : 'person-outline';
-                  }
-
-                  return <Ionicons name={iconName} size={size} color={color} />;
-                },
-              })}
-            >
-              <Tab.Screen name="Inicio" component={CajaNavigator} />
-              <Tab.Screen name="Cocina" component={CocinaNavigator} />
-              <Tab.Screen name="Caja" component={CajaCuentaScreen} />
-              <Tab.Screen name="Stock" component={StockProductosScreen} />
-              <Tab.Screen name="Cliente" component={ClienteNavigator} />
-            </Tab.Navigator>
+            <RootStack.Navigator screenOptions={{ headerShown: false }} initialRouteName="RoleLogin">
+              <RootStack.Screen name="RoleLogin" component={RoleLoginScreen} />
+              <RootStack.Screen name="Caja" component={CajaNavigator} />
+              <RootStack.Screen name="Cocina" component={CocinaNavigator} />
+              <RootStack.Screen name="Cliente" component={ClienteNavigator} />
+            </RootStack.Navigator>
           </NavigationContainer>
         </View>
       </View>

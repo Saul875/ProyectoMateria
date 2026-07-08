@@ -25,9 +25,17 @@ export default function CocinaPedidosScreen() {
   const navigation = useNavigation();
   const [modalVisible, setModalVisible] = React.useState(false);
   const [pedidoSeleccionado, setPedidoSeleccionado] = React.useState(null);
+  const [modalAction, setModalAction] = React.useState(''); // 'cancelar' o 'completar'
 
   const confirmarCancelar = (pedido) => {
     setPedidoSeleccionado(pedido);
+    setModalAction('cancelar');
+    setModalVisible(true);
+  };
+
+  const confirmarCompletar = (pedido) => {
+    setPedidoSeleccionado(pedido);
+    setModalAction('completar');
     setModalVisible(true);
   };
 
@@ -37,8 +45,7 @@ export default function CocinaPedidosScreen() {
       <SubHeader
         title="Revisar Pedidos"
         subtitle="Pedidos desde mesero"
-        rightIconName="chef-hat"
-        rightIconLibrary="MaterialCommunityIcons"
+        rightText="Inventario"
         rightIconColor="#D29034"
         onRightIconPress={() => navigation.navigate('Inventario')}
       />
@@ -76,7 +83,7 @@ export default function CocinaPedidosScreen() {
             </View>
 
             <View style={styles.actionsRow}>
-              <TouchableOpacity style={styles.btnComplete}>
+              <TouchableOpacity style={styles.btnComplete} onPress={() => confirmarCompletar(order)}>
                 <Ionicons name="checkmark" size={18} color="#FFF" />
                 <Text style={styles.btnText}>Completar</Text>
               </TouchableOpacity>
@@ -91,18 +98,22 @@ export default function CocinaPedidosScreen() {
 
       <ConfirmModal
         visible={modalVisible}
-        title="Cancelar Pedido"
-        message={`¿Estás seguro que deseas cancelar el pedido de la Mesa ${pedidoSeleccionado?.mesa}?`}
+        title={modalAction === 'completar' ? "Completar Pedido" : "Cancelar Pedido"}
+        message={
+            modalAction === 'completar' 
+            ? `¿Estás seguro que deseas marcar como completado el pedido de la Mesa ${pedidoSeleccionado?.mesa}?`
+            : `¿Estás seguro que deseas cancelar el pedido de la Mesa ${pedidoSeleccionado?.mesa}?`
+        }
         onConfirm={() => {
           setModalVisible(false);
           setPedidoSeleccionado(null);
-          // Lógica para cancelar el pedido
+          // Lógica para completar o cancelar el pedido
         }}
         onCancel={() => {
           setModalVisible(false);
           setPedidoSeleccionado(null);
         }}
-        confirmText="Cancelar Pedido"
+        confirmText={modalAction === 'completar' ? "Completar Pedido" : "Cancelar Pedido"}
       />
     </SafeAreaView>
   );

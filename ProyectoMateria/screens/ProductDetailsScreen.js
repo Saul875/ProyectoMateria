@@ -1,15 +1,16 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
-import { Ionicons, Feather } from '@expo/vector-icons';
+import { View, Text, StyleSheet, Image, TouchableOpacity, SafeAreaView } from 'react-native';
+import Header from '../components/Header';
+import SubHeader from '../components/SubHeader';
 
 export default function ProductDetailsScreen({ navigation }) {
     return (
-        <View style={styles.container}>
-            <Ionicons name="menu" size={24} color="#777" />
-
-            <Text style={styles.title}>Coffee</Text>
-            <Text style={styles.subtitle}>Integrated Management System</Text>
-            <Text style={styles.details}>Details</Text>
+        <SafeAreaView style={styles.container}>
+            <Header title="Mesero - Detalle" />
+            <SubHeader
+                title="Coffee"
+                subtitle="Integrated Management System"
+            />
 
             <View style={styles.card}>
                 <View style={styles.imageBox}>
@@ -33,60 +34,42 @@ export default function ProductDetailsScreen({ navigation }) {
                 </View>
             </View>
 
-            <TouchableOpacity style={styles.priceButton}>
-                <Text style={styles.price}>$ 3,00</Text>
-            </TouchableOpacity>
+            <View style={styles.buttonRow}>
+                <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+                    <Text style={styles.backText}>Volver</Text>
+                </TouchableOpacity>
 
-            <View style={styles.navbar}>
-                <TouchableOpacity onPress={() => navigation.navigate('MenuCliente')}>
-                    <Ionicons name="home" size={22} color="#8D7A4E" />
+                <TouchableOpacity style={styles.priceButton}>
+                    <Text style={styles.price}>Añadir por $ 3,00</Text>
                 </TouchableOpacity>
-                <Feather name="coffee" size={22} color="#8D7A4E" />
-                <TouchableOpacity onPress={() => navigation.navigate('OrdersCliente')}>
-                    <Ionicons name="bag-outline" size={22} color="#AAA" />
-                </TouchableOpacity>
-                <Ionicons name="notifications-outline" size={22} color="#AAA" />
             </View>
-        </View>
+        </SafeAreaView>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#282828',
-        paddingTop: 55,
-        paddingHorizontal: 25,
-    },
-    title: {
-        color: '#FFF',
-        textAlign: 'center',
-        fontSize: 28,
-        marginTop: -25,
-    },
-    subtitle: {
-        color: '#8D7A4E',
-        textAlign: 'center',
-        fontWeight: 'bold',
-        fontSize: 12,
-    },
-    details: {
-        color: '#FFF',
-        textAlign: 'center',
-        marginTop: 8,
-        fontWeight: 'bold',
+        backgroundColor: '#F9F3EA',
     },
     card: {
-        backgroundColor: '#B8B8B8',
-        marginTop: 35,
+        backgroundColor: '#FFF',
+        marginTop: 20,
+        marginHorizontal: 20,
         borderRadius: 25,
         padding: 20,
+        elevation: 3,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.05,
+        shadowRadius: 8,
     },
     imageBox: {
-        backgroundColor: '#DDD',
+        backgroundColor: '#F9F3EA',
         borderRadius: 20,
         alignItems: 'center',
         padding: 15,
+        marginBottom: 15,
     },
     image: {
         width: 170,
@@ -95,19 +78,20 @@ const styles = StyleSheet.create({
     },
     product: {
         textAlign: 'center',
-        color: '#FFF',
+        color: '#5B3E31',
         fontWeight: 'bold',
-        marginTop: 10,
+        fontSize: 22,
     },
     sectionTitle: {
-        color: '#333',
+        color: '#9E8A7D',
         fontWeight: 'bold',
         marginTop: 15,
     },
     description: {
-        color: '#F5F5F5',
-        fontSize: 12,
+        color: '#5B3E31',
+        fontSize: 14,
         marginTop: 5,
+        lineHeight: 20,
     },
     sizes: {
         flexDirection: 'row',
@@ -115,34 +99,43 @@ const styles = StyleSheet.create({
         marginTop: 25,
     },
     size: {
-        backgroundColor: '#F7F7F7',
-        paddingHorizontal: 23,
-        paddingVertical: 8,
+        backgroundColor: '#F9F3EA',
+        paddingHorizontal: 25,
+        paddingVertical: 10,
         borderRadius: 20,
-        color: '#8D7A4E',
+        color: '#5B3E31',
         fontWeight: 'bold',
+        overflow: 'hidden',
+    },
+    buttonRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginHorizontal: 20,
+        marginTop: 30,
+        gap: 15,
+    },
+    backButton: {
+        flex: 1,
+        backgroundColor: '#E5DFD6',
+        borderRadius: 25,
+        padding: 18,
+        alignItems: 'center',
+    },
+    backText: {
+        color: '#5B3E31',
+        fontWeight: 'bold',
+        fontSize: 16,
     },
     priceButton: {
-        backgroundColor: '#FFF',
-        marginTop: 25,
+        flex: 2,
+        backgroundColor: '#28A745',
         borderRadius: 25,
-        padding: 17,
+        padding: 18,
         alignItems: 'center',
     },
     price: {
-        color: '#8D7A4E',
+        color: '#FFF',
         fontWeight: 'bold',
-    },
-    navbar: {
-        position: 'absolute',
-        bottom: 85,
-        left: 25,
-        right: 25,
-        backgroundColor: '#FFF',
-        borderRadius: 25,
-        paddingVertical: 16,
-        paddingHorizontal: 30,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
+        fontSize: 16,
     },
 });

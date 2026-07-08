@@ -1,242 +1,271 @@
 import React from 'react';
-import {
-    View,
-    Text,
-    StyleSheet,
-    Image,
-    Pressable,
-} from 'react-native';
-import { Ionicons, Feather } from '@expo/vector-icons';
+import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView, SafeAreaView } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import Header from '../components/Header';
+import SubHeader from '../components/SubHeader';
 
-export default function OrderDetailsScreen({ goOrders }) {
+export default function OrderDetailsClienteScreen({ navigation }) {
     return (
-        <View style={styles.container}>
-            <Ionicons name="menu" size={24} color="#777" />
+        <SafeAreaView style={styles.container}>
+            <Header title="Mesero - Detalle Órdenes" />
+            <SubHeader
+                title="Coffee"
+                subtitle="Integrated Management System"
+            />
 
-            <Text style={styles.title}>Coffee</Text>
-            <Text style={styles.subtitle}>Integrated Management System</Text>
-            <Text style={styles.details}>Orders Details</Text>
-
-            <View style={styles.card}>
-                <View style={styles.switchBox}>
-                    <Text style={styles.active}>Deliver</Text>
-                    <Text style={styles.inactive}>Pick Up</Text>
-                </View>
-
-                <View style={styles.actions}>
-                    <Text style={styles.action}>Edit Orders</Text>
-                    <Text style={styles.action}>Add Note</Text>
-                </View>
-
-                <View style={styles.item}>
-                    <Image
-                        source={{ uri: 'https://pngimg.com/uploads/cappuccino/cappuccino_PNG26.png' }}
-                        style={styles.itemImage}
-                    />
-                    <View style={styles.itemInfo}>
-                        <Text style={styles.itemTitle}>Mocha</Text>
-                        <Text style={styles.itemSub}>Deep Foam</Text>
+            <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
+                <View style={styles.card}>
+                    <View style={styles.switchBox}>
+                        <Text style={styles.active}>Deliver</Text>
+                        <Text style={styles.inactive}>Pick Up</Text>
                     </View>
-                    <Text style={styles.quantity}>− 1 +</Text>
-                </View>
 
-                <View style={styles.item}>
-                    <Image
-                        source={{ uri: 'https://pngimg.com/uploads/coffee/coffee_PNG188.png' }}
-                        style={styles.itemImage}
-                    />
-                    <View style={styles.itemInfo}>
-                        <Text style={styles.itemTitle}>Mocha</Text>
-                        <Text style={styles.itemSub}>Deep Foam</Text>
+                    <View style={styles.actions}>
+                        <Text style={styles.action}>Edit Orders</Text>
+                        <Text style={styles.action}>Add Note</Text>
                     </View>
-                    <Text style={styles.quantity}>− 1 +</Text>
+
+                    <View style={styles.item}>
+                        <Image
+                            source={{ uri: 'https://pngimg.com/uploads/cappuccino/cappuccino_PNG26.png' }}
+                            style={styles.itemImage}
+                        />
+                        <View style={styles.itemInfo}>
+                            <Text style={styles.itemTitle}>Mocha</Text>
+                            <Text style={styles.itemSub}>Deep Foam</Text>
+                        </View>
+                        <View style={styles.quantityBox}>
+                            <Ionicons name="remove" size={16} color="#5B3E31" />
+                            <Text style={styles.quantity}>1</Text>
+                            <Ionicons name="add" size={16} color="#5B3E31" />
+                        </View>
+                    </View>
+
+                    <View style={styles.item}>
+                        <Image
+                            source={{ uri: 'https://pngimg.com/uploads/coffee/coffee_PNG188.png' }}
+                            style={styles.itemImage}
+                        />
+                        <View style={styles.itemInfo}>
+                            <Text style={styles.itemTitle}>Mocha</Text>
+                            <Text style={styles.itemSub}>Deep Foam</Text>
+                        </View>
+                        <View style={styles.quantityBox}>
+                            <Ionicons name="remove" size={16} color="#5B3E31" />
+                            <Text style={styles.quantity}>1</Text>
+                            <Ionicons name="add" size={16} color="#5B3E31" />
+                        </View>
+                    </View>
+
+                    <View style={styles.discount}>
+                        <Text style={styles.discountText}>1 Discount is Applied</Text>
+                        <Ionicons name="chevron-forward" size={18} color="#9E8A7D" />
+                    </View>
+
+                    <View style={styles.priceRow}>
+                        <Text style={styles.label}>Price</Text>
+                        <Text style={styles.value}>$ 4,53</Text>
+                    </View>
+
+                    <View style={styles.priceRow}>
+                        <Text style={styles.label}>Delivery Fee</Text>
+                        <Text style={styles.value}>$ 0,90</Text>
+                    </View>
+
+                    <View style={styles.payment}>
+                        <Text style={styles.paymentLabel}>Cash/Wallet</Text>
+                        <Text style={styles.paymentValue}>$ 5,53</Text>
+                    </View>
+
+                    <View style={styles.buttonRow}>
+                        <TouchableOpacity style={styles.cancelButton} onPress={() => navigation.goBack()}>
+                            <Text style={styles.cancelText}>Cancelar</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity style={styles.orderButton} onPress={() => navigation.goBack()}>
+                            <Text style={styles.orderText}>Confirmar Orden</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
-
-                <View style={styles.discount}>
-                    <Text style={styles.discountText}>1 Discount is Applies</Text>
-                    <Ionicons name="chevron-forward" size={18} color="#777" />
-                </View>
-
-                <View style={styles.priceRow}>
-                    <Text style={styles.label}>Price</Text>
-                    <Text style={styles.value}>$ 4,53</Text>
-                </View>
-
-                <View style={styles.priceRow}>
-                    <Text style={styles.label}>Delivery Fee</Text>
-                    <Text style={styles.value}>$ 0,90  $1,0</Text>
-                </View>
-
-                <View style={styles.payment}>
-                    <Text style={styles.paymentText}>Cash/Wallet</Text>
-                    <Text style={styles.paymentText}>$ 5,53</Text>
-                </View>
-
-                <Pressable style={styles.orderButton} onPress={goOrders}>
-                    <Text style={styles.orderText}>Order</Text>
-                </Pressable>
-            </View>
-
-            <View style={styles.navbar}>
-                <Ionicons name="home" size={22} color="#111" />
-                <Feather name="coffee" size={22} color="#8d7a4e" />
-                <Ionicons name="bag-outline" size={22} color="#8d7a4e" />
-                <Ionicons name="notifications-outline" size={22} color="#aaa" />
-            </View>
-        </View>
+            </ScrollView>
+        </SafeAreaView>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#282828',
-        paddingTop: 55,
-        paddingHorizontal: 25,
+        backgroundColor: '#F9F3EA',
     },
-    title: {
-        color: '#fff',
-        textAlign: 'center',
-        fontSize: 28,
-        marginTop: -25,
-    },
-    subtitle: {
-        color: '#8d7a4e',
-        textAlign: 'center',
-        fontWeight: 'bold',
-        fontSize: 12,
-    },
-    details: {
-        color: '#fff',
-        textAlign: 'center',
-        fontWeight: 'bold',
-        marginTop: 5,
+    scrollContent: {
+        paddingHorizontal: 20,
+        paddingBottom: 40,
     },
     card: {
-        backgroundColor: '#fff',
+        backgroundColor: '#FFF',
         borderRadius: 25,
-        padding: 16,
+        padding: 20,
         marginTop: 15,
+        elevation: 3,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.05,
+        shadowRadius: 8,
     },
     switchBox: {
-        backgroundColor: '#eee',
+        backgroundColor: '#F9F3EA',
         borderRadius: 20,
         flexDirection: 'row',
         padding: 4,
+        marginBottom: 15,
     },
     active: {
         flex: 1,
-        backgroundColor: '#8d7a4e',
-        color: '#fff',
+        backgroundColor: '#8D7A4E',
+        color: '#FFF',
         textAlign: 'center',
         borderRadius: 18,
-        padding: 8,
+        paddingVertical: 10,
         fontWeight: 'bold',
     },
     inactive: {
         flex: 1,
         textAlign: 'center',
-        padding: 8,
+        paddingVertical: 10,
         fontWeight: 'bold',
-        color: '#777',
+        color: '#9E8A7D',
     },
     actions: {
         flexDirection: 'row',
         justifyContent: 'center',
-        marginVertical: 10,
+        marginBottom: 20,
         gap: 10,
     },
     action: {
         borderWidth: 1,
-        borderColor: '#ddd',
+        borderColor: '#E5DFD6',
         borderRadius: 15,
-        paddingHorizontal: 10,
-        paddingVertical: 4,
-        color: '#777',
+        paddingHorizontal: 15,
+        paddingVertical: 6,
+        color: '#9E8A7D',
         fontSize: 12,
+        fontWeight: 'bold',
     },
     item: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginVertical: 8,
+        marginVertical: 10,
+        backgroundColor: '#F9F3EA',
+        padding: 10,
+        borderRadius: 15,
     },
     itemImage: {
-        width: 45,
-        height: 45,
+        width: 50,
+        height: 50,
         resizeMode: 'contain',
     },
     itemInfo: {
         flex: 1,
-        marginLeft: 10,
+        marginLeft: 15,
     },
     itemTitle: {
-        color: '#8d7a4e',
+        color: '#5B3E31',
         fontWeight: 'bold',
+        fontSize: 16,
     },
     itemSub: {
-        color: '#aaa',
+        color: '#9E8A7D',
         fontSize: 12,
+        marginTop: 2,
+    },
+    quantityBox: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: '#FFF',
+        paddingHorizontal: 10,
+        paddingVertical: 5,
+        borderRadius: 15,
     },
     quantity: {
-        color: '#555',
+        color: '#5B3E31',
         fontWeight: 'bold',
+        marginHorizontal: 8,
     },
     discount: {
-        marginTop: 15,
+        marginTop: 20,
         borderTopWidth: 1,
         borderBottomWidth: 1,
-        borderColor: '#eee',
-        paddingVertical: 14,
+        borderColor: '#E5DFD6',
+        paddingVertical: 15,
         flexDirection: 'row',
         justifyContent: 'space-between',
+        alignItems: 'center',
     },
     discountText: {
-        color: '#555',
+        color: '#5B3E31',
         fontWeight: 'bold',
+        fontSize: 14,
     },
     priceRow: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginTop: 14,
+        marginTop: 15,
     },
     label: {
-        color: '#777',
+        color: '#9E8A7D',
+        fontWeight: '500',
     },
     value: {
-        color: '#444',
+        color: '#5B3E31',
         fontWeight: 'bold',
     },
     payment: {
-        marginTop: 22,
+        marginTop: 20,
         borderTopWidth: 1,
-        borderColor: '#eee',
-        paddingTop: 14,
+        borderColor: '#E5DFD6',
+        paddingTop: 15,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
     },
-    paymentText: {
-        color: '#333',
+    paymentLabel: {
+        color: '#5B3E31',
         fontWeight: 'bold',
+        fontSize: 16,
+    },
+    paymentValue: {
+        color: '#8D7A4E',
+        fontWeight: 'bold',
+        fontSize: 18,
+    },
+    buttonRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginTop: 25,
+        gap: 15,
+    },
+    cancelButton: {
+        flex: 1,
+        backgroundColor: '#E5DFD6',
+        borderRadius: 20,
+        paddingVertical: 16,
+        alignItems: 'center',
+    },
+    cancelText: {
+        color: '#5B3E31',
+        fontWeight: 'bold',
+        fontSize: 16,
     },
     orderButton: {
-        backgroundColor: '#8d7a4e',
-        borderRadius: 10,
-        marginTop: 15,
-        paddingVertical: 14,
+        flex: 2,
+        backgroundColor: '#28A745',
+        borderRadius: 20,
+        paddingVertical: 16,
         alignItems: 'center',
     },
     orderText: {
-        color: '#fff',
+        color: '#FFF',
         fontWeight: 'bold',
-    },
-    navbar: {
-        position: 'absolute',
-        bottom: 20,
-        left: 25,
-        right: 25,
-        backgroundColor: '#fff',
-        borderRadius: 25,
-        paddingVertical: 16,
-        paddingHorizontal: 30,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
+        fontSize: 16,
     },
 });

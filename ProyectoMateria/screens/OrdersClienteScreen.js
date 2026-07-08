@@ -1,15 +1,10 @@
 import React from 'react';
-import {
-    View,
-    Text,
-    StyleSheet,
-    Image,
-    Pressable,
-    ScrollView,
-} from 'react-native';
-import { Ionicons, Feather } from '@expo/vector-icons';
+import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView, SafeAreaView } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import Header from '../components/Header';
+import SubHeader from '../components/SubHeader';
 
-export default function OrdersScreen({ goMenu, goOrderDetails }) {
+export default function OrdersClienteScreen({ navigation }) {
     const orders = [
         {
             name: 'Order 1',
@@ -33,23 +28,40 @@ export default function OrdersScreen({ goMenu, goOrderDetails }) {
         },
     ];
 
+    const tabs = [
+        { label: 'Delivery', active: true },
+        { label: 'In progress', active: false },
+        { label: 'Pending', active: false },
+    ];
+
     return (
-        <View style={styles.container}>
-            <Ionicons name="menu" size={24} color="#777" />
+        <SafeAreaView style={styles.container}>
+            <Header title="Mesero - Órdenes" />
+            <SubHeader
+                title="Coffee"
+                subtitle="Integrated Management System"
+                rightIconName="basket"
+                rightIconLibrary="MaterialCommunityIcons"
+                rightIconColor="#8D7A4E"
+                showBorder
+            />
 
-            <Text style={styles.title}>Coffee</Text>
-            <Text style={styles.subtitle}>Integrated Management System</Text>
-            <Text style={styles.ordersTitle}>Orders</Text>
-
-            <View style={styles.tabs}>
-                <Text style={styles.activeTab}>Delivery</Text>
-                <Text style={styles.tab}>In progress</Text>
-                <Text style={styles.tab}>Pending</Text>
+            <View style={styles.tabsMenu}>
+                {tabs.map((tab, i) => (
+                    <TouchableOpacity key={i} style={tab.active ? styles.tabItemActive : styles.tabItem}>
+                        <Text style={tab.active ? styles.tabTextActive : styles.tabText}>{tab.label}</Text>
+                        {tab.active && <View style={styles.tabIndicator} />}
+                    </TouchableOpacity>
+                ))}
             </View>
 
-            <ScrollView contentContainerStyle={styles.orders}>
+            <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.orders}>
                 {orders.map((item, index) => (
-                    <Pressable key={index} style={styles.card} onPress={goOrderDetails}>
+                    <TouchableOpacity 
+                        key={index} 
+                        style={styles.card} 
+                        onPress={() => navigation.navigate('OrderDetailsCliente')}
+                    >
                         <Image source={{ uri: item.image }} style={styles.image} />
                         <Text style={styles.name}>{item.name}</Text>
 
@@ -57,81 +69,78 @@ export default function OrdersScreen({ goMenu, goOrderDetails }) {
                             <Text style={styles.price}>{item.price}</Text>
                             {index === 1 && (
                                 <View style={styles.plus}>
-                                    <Ionicons name="add" size={15} color="#8d7a4e" />
+                                    <Ionicons name="add" size={16} color="#FFF" />
                                 </View>
                             )}
                         </View>
-                    </Pressable>
+                    </TouchableOpacity>
                 ))}
-            </ScrollView>
 
-            <View style={styles.navbar}>
-                <Pressable onPress={goMenu}>
-                    <Ionicons name="home" size={22} color="#111" />
-                </Pressable>
-                <Feather name="coffee" size={22} color="#8d7a4e" />
-                <Ionicons name="bag-outline" size={22} color="#8d7a4e" />
-                <Ionicons name="notifications-outline" size={22} color="#aaa" />
-            </View>
-        </View>
+                <TouchableOpacity style={styles.volverBtn} onPress={() => navigation.goBack()}>
+                    <Text style={styles.volverText}>Volver al Menú</Text>
+                </TouchableOpacity>
+            </ScrollView>
+        </SafeAreaView>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#282828',
-        paddingTop: 55,
-        paddingHorizontal: 25,
+        backgroundColor: '#F9F3EA',
     },
-    title: {
-        color: '#fff',
-        textAlign: 'center',
-        fontSize: 28,
-        marginTop: -25,
-    },
-    subtitle: {
-        color: '#8d7a4e',
-        textAlign: 'center',
-        fontWeight: 'bold',
-        fontSize: 12,
-    },
-    ordersTitle: {
-        textAlign: 'center',
-        color: '#fff',
-        fontWeight: 'bold',
-        marginTop: 5,
-    },
-    tabs: {
+    tabsMenu: {
         flexDirection: 'row',
+        paddingHorizontal: 20,
+        marginBottom: 20,
         justifyContent: 'space-between',
-        marginTop: 18,
     },
-    activeTab: {
-        color: '#fff',
-        borderBottomWidth: 2,
-        borderBottomColor: '#fff',
-        paddingBottom: 5,
-        fontWeight: 'bold',
+    tabItemActive: {
+        flex: 1,
+        alignItems: 'center',
+        paddingBottom: 8,
     },
-    tab: {
-        color: '#aaa',
+    tabItem: {
+        flex: 1,
+        alignItems: 'center',
+        paddingBottom: 8,
+    },
+    tabTextActive: {
+        fontSize: 16,
         fontWeight: 'bold',
+        color: '#5B3E31',
+    },
+    tabText: {
+        fontSize: 14,
+        fontWeight: '500',
+        color: '#9E8A7D',
+    },
+    tabIndicator: {
+        height: 3,
+        backgroundColor: '#5B3E31',
+        width: 20,
+        marginTop: 4,
+        borderRadius: 2,
     },
     orders: {
         flexDirection: 'row',
         flexWrap: 'wrap',
         justifyContent: 'space-between',
-        paddingBottom: 90,
-        marginTop: 25,
+        paddingHorizontal: 20,
+        paddingBottom: 40,
     },
     card: {
-        width: '47%',
-        backgroundColor: '#b8b8b8',
-        borderRadius: 25,
+        width: '48%',
+        backgroundColor: '#FFF',
+        borderRadius: 20,
         padding: 15,
+        marginBottom: 15,
         alignItems: 'center',
-        marginBottom: 22,
+        elevation: 3,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.05,
+        shadowRadius: 8,
     },
     image: {
         width: 90,
@@ -139,11 +148,13 @@ const styles = StyleSheet.create({
         resizeMode: 'contain',
     },
     name: {
-        color: '#fff',
+        color: '#5B3E31',
+        fontSize: 16,
         fontWeight: 'bold',
+        marginTop: 10,
     },
     priceBox: {
-        backgroundColor: '#fff',
+        backgroundColor: '#F9F3EA',
         borderRadius: 20,
         marginTop: 10,
         paddingVertical: 8,
@@ -154,23 +165,29 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     price: {
-        color: '#8d7a4e',
+        color: '#8D7A4E',
         fontWeight: 'bold',
     },
     plus: {
-        backgroundColor: '#fff',
+        backgroundColor: '#8D7A4E',
+        width: 24,
+        height: 24,
+        borderRadius: 12,
+        alignItems: 'center',
+        justifyContent: 'center',
         marginLeft: 10,
     },
-    navbar: {
-        position: 'absolute',
-        bottom: 20,
-        left: 25,
-        right: 25,
-        backgroundColor: '#fff',
-        borderRadius: 25,
-        paddingVertical: 16,
-        paddingHorizontal: 30,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
+    volverBtn: {
+        width: '100%',
+        backgroundColor: '#E5DFD6',
+        borderRadius: 20,
+        padding: 16,
+        marginTop: 20,
+        alignItems: 'center',
+    },
+    volverText: {
+        color: '#5B3E31',
+        fontWeight: 'bold',
+        fontSize: 16,
     },
 });

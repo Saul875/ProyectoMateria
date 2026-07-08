@@ -1,6 +1,8 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native';
-import { Ionicons, Feather } from '@expo/vector-icons';
+import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, SafeAreaView } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import Header from '../components/Header';
+import SubHeader from '../components/SubHeader';
 
 const products = [
     {
@@ -25,19 +27,39 @@ const products = [
     },
 ];
 
+const tabs = [
+    { label: 'Menú', active: true, onPress: null },
+    { label: 'Mesas', active: false, onPress: 'Mesas' },
+];
+
 export default function MenuClienteScreen({ navigation }) {
     return (
-        <View style={styles.container}>
-            <Text style={styles.title}>Coffee</Text>
-            <Text style={styles.subtitle}>Integrated Management System</Text>
-            <Text style={styles.menu}>MENU</Text>
+        <SafeAreaView style={styles.container}>
+            <Header title="Mesero - Menú" />
+            <SubHeader
+                title="Coffee"
+                subtitle="Integrated Management System"
+                rightIconName="basket"
+                rightIconLibrary="MaterialCommunityIcons"
+                rightIconColor="#8D7A4E"
+                showBorder
+                onRightIconPress={() => navigation.navigate('OrdersCliente')}
+            />
 
-            <View style={styles.orderBox}>
-                <Text style={styles.orderText}>New order...</Text>
-                <Ionicons name="add" size={18} color="#8D7A4E" />
+            <View style={styles.tabsMenu}>
+                {tabs.map((tab, i) => (
+                    <TouchableOpacity 
+                        key={i} 
+                        style={tab.active ? styles.tabItemActive : styles.tabItem} 
+                        onPress={() => tab.onPress && navigation.navigate(tab.onPress)}
+                    >
+                        <Text style={tab.active ? styles.tabTextActive : styles.tabText}>{tab.label}</Text>
+                        {tab.active && <View style={styles.tabIndicator} />}
+                    </TouchableOpacity>
+                ))}
             </View>
 
-            <ScrollView contentContainerStyle={styles.products}>
+            <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.products}>
                 {products.map((item, index) => (
                     <TouchableOpacity
                         key={index}
@@ -50,89 +72,88 @@ export default function MenuClienteScreen({ navigation }) {
                         <View style={styles.row}>
                             <Text style={styles.price}>{item.price}</Text>
                             <View style={styles.plus}>
-                                <Ionicons name="add" size={16} color="#8D7A4E" />
+                                <Ionicons name="add" size={16} color="#FFF" />
                             </View>
                         </View>
                     </TouchableOpacity>
                 ))}
             </ScrollView>
-
-            <View style={styles.navbar}>
-                <Ionicons name="home" size={22} color="#8D7A4E" />
-                <Feather name="coffee" size={22} color="#8D7A4E" />
-                <TouchableOpacity onPress={() => navigation.navigate('OrdersCliente')}>
-                    <Ionicons name="bag-outline" size={22} color="#999" />
-                </TouchableOpacity>
-                <Ionicons name="notifications-outline" size={22} color="#999" />
-            </View>
-        </View>
+        </SafeAreaView>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#F5F3EF',
-        paddingTop: 55,
-        paddingHorizontal: 25,
+        backgroundColor: '#F9F3EA',
     },
-    title: {
-        textAlign: 'center',
-        fontSize: 28,
-        color: '#B8B8B8',
-        fontWeight: '500',
-    },
-    subtitle: {
-        textAlign: 'center',
-        color: '#8D7A4E',
-        fontWeight: 'bold',
-        fontSize: 12,
-    },
-    menu: {
-        textAlign: 'center',
-        marginTop: 5,
-        color: '#8D7A4E',
-        fontWeight: 'bold',
-    },
-    orderBox: {
-        backgroundColor: '#FFF',
-        marginTop: 20,
-        borderRadius: 10,
-        padding: 14,
+    tabsMenu: {
         flexDirection: 'row',
+        paddingHorizontal: 20,
+        marginBottom: 20,
         justifyContent: 'space-between',
     },
-    orderText: {
-        color: '#8D7A4E',
+    tabItemActive: {
+        flex: 1,
+        alignItems: 'center',
+        paddingBottom: 8,
+    },
+    tabItem: {
+        flex: 1,
+        alignItems: 'center',
+        paddingBottom: 8,
+    },
+    tabTextActive: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        color: '#5B3E31',
+    },
+    tabText: {
+        fontSize: 16,
         fontWeight: '500',
+        color: '#9E8A7D',
+    },
+    tabIndicator: {
+        height: 3,
+        backgroundColor: '#5B3E31',
+        width: 20,
+        marginTop: 4,
+        borderRadius: 2,
     },
     products: {
         flexDirection: 'row',
         flexWrap: 'wrap',
         justifyContent: 'space-between',
-        paddingBottom: 120,
-        marginTop: 20,
+        paddingHorizontal: 20,
+        paddingBottom: 40,
     },
     card: {
-        width: '47%',
-        backgroundColor: '#E8E6E3',
-        borderRadius: 25,
+        width: '48%',
+        backgroundColor: '#FFF',
+        borderRadius: 20,
         padding: 15,
-        marginBottom: 20,
+        marginBottom: 15,
         alignItems: 'center',
+        elevation: 3,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.05,
+        shadowRadius: 8,
     },
     image: {
-        width: 90,
-        height: 80,
+        width: 100,
+        height: 90,
         resizeMode: 'contain',
     },
     productName: {
-        color: '#AAA',
-        marginTop: 5,
+        color: '#5B3E31',
+        fontSize: 16,
+        fontWeight: 'bold',
+        marginTop: 10,
     },
     row: {
         width: '100%',
-        marginTop: 10,
+        marginTop: 15,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
@@ -140,25 +161,14 @@ const styles = StyleSheet.create({
     price: {
         color: '#8D7A4E',
         fontWeight: 'bold',
+        fontSize: 15,
     },
     plus: {
-        backgroundColor: '#FFF',
-        width: 32,
-        height: 32,
-        borderRadius: 16,
+        backgroundColor: '#8D7A4E',
+        width: 28,
+        height: 28,
+        borderRadius: 14,
         alignItems: 'center',
         justifyContent: 'center',
-    },
-    navbar: {
-        position: 'absolute',
-        bottom: 85,
-        left: 25,
-        right: 25,
-        backgroundColor: '#FFF',
-        borderRadius: 25,
-        paddingVertical: 16,
-        paddingHorizontal: 30,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
     },
 });

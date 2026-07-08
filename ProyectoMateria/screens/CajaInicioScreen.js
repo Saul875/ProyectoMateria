@@ -6,15 +6,13 @@ import Header from '../components/Header';
 import SubHeader from '../components/SubHeader';
 
 const gridCards = [
-  { icon: 'trending-up',   color: '#20C997', label: 'Ganancias', value: '$3,480.00', onPress: null },
-  { icon: 'trending-down', color: '#EF4444', label: 'Gastos',    value: '$450.00',   onPress: null },
+  { icon: 'trending-up',   color: '#20C997', label: 'Ganancias',   value: '$3,480.00', onPress: null },
+  { icon: 'trending-down', color: '#EF4444', label: 'Gastos',      value: '$450.00',   onPress: null },
   { icon: null,            color: '#3B82F6', label: 'Caja Actual', value: '$2,500.00', onPress: 'Cuenta', isDollar: true },
-  { icon: 'cube-outline',  color: '#F59E0B', label: 'Solicitud',  value: 'Suministros', onPress: 'Suministros', isText: true },
 ];
 
 const tabs = [
   { label: 'Caja',  active: true,  onPress: null },
-  { label: 'Mesas', active: false, onPress: 'Mesas' },
 ];
 
 //Zona2: componente
@@ -54,20 +52,15 @@ export default function CajaInicioScreen() {
             </View>
           ))}
         </View>
-        <View style={styles.row}>
-          {gridCards.slice(2, 4).map((card, i) => (
-            <TouchableOpacity key={i} style={styles.card} onPress={() => card.onPress && navigation.navigate(card.onPress)} disabled={!card.onPress}>
-              <View style={[styles.circleIcon, { backgroundColor: card.color }]}>
-                {card.isDollar
-                  ? <Text style={{ color: '#FFF', fontSize: 24, fontWeight: 'bold' }}>$</Text>
-                  : <Ionicons name={card.icon} size={24} color="#FFF" />
-                }
-              </View>
-              <Text style={styles.cardLabel}>{card.label}</Text>
-              <Text style={card.isText ? styles.cardValueText : styles.cardValue}>{card.value}</Text>
-            </TouchableOpacity>
-          ))}
-        </View>
+        <TouchableOpacity style={styles.cardWide} onPress={() => navigation.navigate('Cuenta')}>
+          <View style={[styles.circleIcon, { backgroundColor: '#3B82F6' }]}>
+            <Text style={{ color: '#FFF', fontSize: 24, fontWeight: 'bold' }}>$</Text>
+          </View>
+          <View>
+            <Text style={styles.cardLabel}>Caja Actual</Text>
+            <Text style={styles.cardValue}>$2,500.00</Text>
+          </View>
+        </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
   );
@@ -155,5 +148,18 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     color: '#5B3E31',
+  },
+  cardWide: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#FFF',
+    borderRadius: 25,
+    padding: 20,
+    gap: 20,
+    elevation: 3,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.05,
+    shadowRadius: 8,
   },
 });
